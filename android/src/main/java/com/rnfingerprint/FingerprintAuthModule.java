@@ -94,7 +94,8 @@ public class FingerprintAuthModule extends ReactContextBaseJavaModule {
         }
     }
 
-    /*** TOUH ID ACTIVITY REALTED STUFF ***/
+
+    /*** TOUCH ID ACTIVITY RELATED STUFF ***/
     private FingerprintDialog fingerprintDialog;
 
     private FingerprintManager fingerprintManager;
@@ -110,11 +111,12 @@ public class FingerprintAuthModule extends ReactContextBaseJavaModule {
 
     private Context appContext;
 
-    public boolean isSupportedSDK() {
-        return android.os.Build.VERSION.SDK_INT >= 23;
-    }
-
     public boolean isFingerprintAuthAvailable() {
+
+        if (android.os.Build.VERSION.SDK_INT < 23) {
+            return false;
+        }
+
         if (!keyguardManager.isKeyguardSecure()) {
             return false;
         }
