@@ -46,11 +46,6 @@ public class FingerprintAuthModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void isSupported(Callback reactErrorCallback, Callback reactSuccessCallback) {
-        if (!isSupportedSDK()) {
-            reactErrorCallback.invoke("Not supported.");
-            return;
-        }
-
         keyguardManager =
                 (KeyguardManager) getCurrentActivity().getSystemService(Context.KEYGUARD_SERVICE);
         fingerprintManager =
@@ -132,7 +127,6 @@ public class FingerprintAuthModule extends ReactContextBaseJavaModule {
         return true;
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     protected void generateKey() {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore");
