@@ -123,7 +123,7 @@ public class FingerprintDialog extends DialogFragment
     @Override
     public void onError(String errorString) {
         dialogCallback.onError(errorString);
-        dismiss();
+        if(isAdded()) dismiss();
     }
 
     @Override
