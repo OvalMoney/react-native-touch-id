@@ -59,7 +59,10 @@ public class FingerprintAuthModule extends ReactContextBaseJavaModule implements
         if (!isFingerprintAuthAvailable()) {
             reactErrorCallback.invoke("Not supported.");
         } else {
-            reactSuccessCallback.invoke("Is supported.");
+            reactSuccessCallback.invoke(
+
+
+                    git status"Is supported.");
         }
     }
 
@@ -114,25 +117,19 @@ public class FingerprintAuthModule extends ReactContextBaseJavaModule implements
 
         final Activity activity = getCurrentActivity();
         if (activity == null) {
-            return false; // we can't do the check
+            return false;
         }
 
         final KeyguardManager keyguardManager = getKeyguardManager();
 
-        // We should call it only when we absolutely sure that API >= 23.
-        // Otherwise we will get the crash on older versions.
-        // TODO: migrate to FingerprintManagerCompat
         final FingerprintManager fingerprintManager = (FingerprintManager) activity.getSystemService(Context.FINGERPRINT_SERVICE);
 
-        if (keyguardManager == null || !keyguardManager.isKeyguardSecure()) {
-            return false;
-        }
+        return keyguardManager != null &&
+                keyguardManager.isKeyguardSecure() &&
+                fingerprintManager != null &&
+                fingerprintManager.isHardwareDetected() &&
+                fingerprintManager.hasEnrolledFingerprints();
 
-        if (fingerprintManager == null || !fingerprintManager.isHardwareDetected()) {
-            return false;
-        }
-
-        return fingerprintManager.hasEnrolledFingerprints();
     }
 
     @Override
