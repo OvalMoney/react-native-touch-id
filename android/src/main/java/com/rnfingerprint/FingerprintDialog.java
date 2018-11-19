@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,9 @@ import com.facebook.react.bridge.ReadableMap;
 public class FingerprintDialog extends DialogFragment implements FingerprintHandler.Callback {
 
     private FingerprintManager.CryptoObject mCryptoObject;
-    private DialogResultListener dialogCallback;
+    private @Nullable
+    DialogResultListener dialogCallback;
+
     private FingerprintHandler mFingerprintHandler;
     private boolean isAuthInProgress;
 
@@ -104,7 +107,7 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
         this.mCryptoObject = cryptoObject;
     }
 
-    public void setDialogCallback(DialogResultListener newDialogCallback) {
+    public void setDialogCallback(@Nullable DialogResultListener newDialogCallback) {
         this.dialogCallback = newDialogCallback;
     }
 
@@ -137,14 +140,18 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
     @Override
     public void onAuthenticated() {
         this.isAuthInProgress = false;
-        this.dialogCallback.onAuthenticated();
+        if(dialogCallback != null) {
+            this.dialogCallback.onAuthenticated();
+        }
         dismiss();
     }
 
     @Override
     public void onError(String errorString) {
         this.isAuthInProgress = false;
-        this.dialogCallback.onError(errorString);
+        if(dialogCallback != null) {
+            this.dialogCallback.onError(errorString);
+        }
         if(isAdded()){
             dismiss();
         }
@@ -154,7 +161,9 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
     public void onCancelled() {
         this.isAuthInProgress = false;
         this.mFingerprintHandler.endAuth();
-        this.dialogCallback.onCancelled();
+        if(dialogCallback != null) {
+            this.dialogCallback.onCancelled();
+        }
         dismiss();
     }
 }
