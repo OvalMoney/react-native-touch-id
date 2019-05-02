@@ -176,14 +176,10 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
     }
 
     @Override
-    public void onError(String errorString) {
-        this.isAuthInProgress = false;
-        if(dialogCallback != null) {
-            this.dialogCallback.onError(errorString);
-        }
-        if(isAdded()){
-            dismiss();
-        }
+    public void onError(String errorString, int errorCode) {
+        this.mFingerprintError.setText(errorString);
+        this.mFingerprintImage.setColorFilter(this.imageErrorColor);
+        this.mFingerprintSensorDescription.setText(this.sensorErrorDescription);
     }
 
     @Override
