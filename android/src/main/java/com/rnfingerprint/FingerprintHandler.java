@@ -31,17 +31,16 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     }
 
     @Override
-    public void onAuthenticationError(int errMsgId,
+    public void onAuthenticationError(int errCode,
                                       CharSequence errString) {
         if (!selfCancelled) {
-            mCallback.onError(errString.toString());
+            mCallback.onError(errString.toString(), errCode);
         }
     }
 
     @Override
     public void onAuthenticationFailed() {
-        mCallback.onError("failed");
-        cancelAuthenticationSignal();
+        mCallback.onError("Not recognized. Try again.", FingerprintAuthConstants.AUTHENTICATION_FAILED);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     public interface Callback {
         void onAuthenticated();
 
-        void onError(String errorString);
+        void onError(String errorString, int errorCode);
 
         void onCancelled();
     }
