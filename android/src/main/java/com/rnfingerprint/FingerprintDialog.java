@@ -57,7 +57,7 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
         final View v = inflater.inflate(R.layout.fingerprint_dialog, container, false);
 
         final TextView mFingerprintDescription = (TextView) v.findViewById(R.id.fingerprint_description);
-        mFingerprintDescription.setText(this.authReason);
+        mFingerprintDescription.setText("");
 
         this.mFingerprintImage = (ImageView) v.findViewById(R.id.fingerprint_icon);
         if (this.imageColor != 0) {
@@ -69,6 +69,8 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
 
         this.mFingerprintError = (TextView) v.findViewById(R.id.fingerprint_error);
         this.mFingerprintError.setText(this.errorText);
+
+        this.mFingerprintError.setVisibility(View.INVISIBLE);
 
         final Button mCancelButton = (Button) v.findViewById(R.id.cancel_button);
         mCancelButton.setText(this.cancelText);
@@ -156,6 +158,10 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
         if (config.hasKey("imageErrorColor")) {
             this.imageErrorColor = config.getInt("imageErrorColor");
         }
+
+        if (config.hasKey("errorText")) {
+            this.errorText = config.getString("errorText");
+        }
     }
 
     public interface DialogResultListener {
@@ -168,6 +174,7 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
 
     @Override
     public void onAuthenticated() {
+        this.mFingerprintError.setVisibility(View.INVISIBLE);
         this.isAuthInProgress = false;
         if(dialogCallback != null) {
             this.dialogCallback.onAuthenticated();
@@ -177,9 +184,8 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
 
     @Override
     public void onError(String errorString, int errorCode) {
-        this.mFingerprintError.setText(errorString);
+        this.mFingerprintError.setVisibility(View.VISIBLE);
         this.mFingerprintImage.setColorFilter(this.imageErrorColor);
-        this.mFingerprintSensorDescription.setText(this.sensorErrorDescription);
     }
 
     @Override
