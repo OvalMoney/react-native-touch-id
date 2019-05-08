@@ -43,6 +43,10 @@ declare module 'react-native-touch-id' {
        */
       cancelText?: string;
       /**
+       * **Android only** - Text shown under the fingerprint image after a failed attemp
+       */
+      errorText?: string;
+      /**
        * **iOS only** - By default specified 'Show Password' label. If set to empty string label is invisible.
        */
       fallbackLabel?: string;
