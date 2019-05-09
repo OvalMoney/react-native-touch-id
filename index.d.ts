@@ -12,6 +12,11 @@ declare module 'react-native-touch-id' {
        * Return unified error messages
        */
       unifiedErrors?: boolean;
+        
+      /**
+       * Avoid PassCode fallback
+       */
+      passcodeFallback?: boolean;
     }
   
     /**
